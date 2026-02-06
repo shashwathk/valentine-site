@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Love ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:Papyrus, fantasy;
+  background:#ffe4ef;
+  color:#c2185b;
+  overflow-x:hidden;
+}
+
+button{
+  font-family: "Lucida Handwriting", cursive;
+}
+
+/* HERO */
+.hero{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+.poem{
+  font-size:clamp(28px,6vw,60px);
+}
+
+/* Romantic buttons */
+.love-btn,.memory-btn{
+  padding:14px 36px;
+  border-radius:50px;
+  font-size:28px;
+  border:none;
+  cursor:pointer;
+  margin-top:18px;
+  color:white;
+  background:linear-gradient(135deg,#ff4d88,#ff80ab);
+  box-shadow:0 10px 25px rgba(255,77,136,.35);
+  transition:.3s;
+}
+
+.love-btn:hover,.memory-btn:hover{
+  transform:translateY(-3px) scale(1.02);
+}
+
+.memory-btn{display:none;}
+
+.surprise{
+  display:none;
+  margin-top:20px;
+  font-size:30px;
+}
+
+/* Hearts */
+.heart{
+  position:fixed;
+  top:-10px;
+  animation:fall linear forwards;
+}
+@keyframes fall{
+  to{transform:translateY(110vh);opacity:0;}
+}
+
+/* Album Section */
+.collage-section{
+  display:none;
+  padding:40px 10px 80px;
+}
+
+.collage-title{
+  text-align:center;
+  font-size:32px;
+}
+
+/* Album layout */
+.album{
+  display:flex;
+  max-width:1000px;
+  margin:auto;
+  background:#fff0f6;
+  border-radius:12px;
+  overflow:hidden;
+}
+
+.thumbnail-page{
+  width:40%;
+  padding:20px;
+  background:#ffeaf3;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(80px,1fr));
+  gap:10px;
+  max-height:600px;
+  overflow-y:auto;
+}
+
+.thumbnail-page img{
+  width:100%;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+/* Preview page */
+.preview-page{
+  width:60%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:white;
+  padding:20px;
+  transition:.6s;
+}
+
+.preview-page.flip{
+  transform:rotateY(-8deg);
+}
+
+.preview-frame{
+  width:90%;
+  height:500px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.preview-frame img{
+  max-width:100%;
+  max-height:100%;
+  border-radius:10px;
+}
+
+/* Proposal */
+.love-note{
+  text-align:center;
+  margin-top:30px;
+  font-size:20px;
+}
+
+.choice-buttons{
+  text-align:center;
+  margin-top:20px;
+}
+
+.choice-buttons button{
+  margin:10px;
+  padding:12px 25px;
+  border:none;
+  border-radius:30px;
+  font-size:18px;
+  cursor:pointer;
+}
+
+.yes-btn{background:#ff4d88;color:white;}
+.no-btn{background:#444;color:white;}
+
+/* Letter popup */
+/* Overlay */
+.letter-overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.0);
+  backdrop-filter:blur(0px);
+  justify-content:center;
+  align-items:flex-end;
+  padding:20px;
+  box-sizing:border-box;
+
+  transition:.5s;
+}
+
+/* Overlay visible */
+.letter-overlay.show{
+  background:rgba(0,0,0,.5);
+  backdrop-filter:blur(6px);
+}
+
+/* Letter card */
+.letter{
+  background:#fffdf5;
+  padding:30px;
+  width:100%;
+  max-width:650px;
+  max-height:90vh;
+  overflow-y:auto;
+  border-radius:18px 18px 0 0;
+
+  font-family:'Dancing Script',cursive;
+  font-size:clamp(14px,2.0vw,20px);
+  line-height:1.5;
+
+  box-shadow:0 -10px 40px rgba(0,0,0,.25);
+
+  /* animation start */
+  transform:translateY(100%);
+  transition:transform .6s ease;
+}
+
+/* slide up */
+.letter-overlay.show .letter{
+  transform:translateY(0);
+}
+
+.back-btn{
+  margin-top:20px;
+  background:#ff4d88;
+  color:white;
+  border:none;
+  padding:8px 18px;
+  border-radius:20px;
+  cursor:pointer;
+}
+
+/* Funny popup */
+.fun-popup{
+  position:fixed;
+  bottom:40px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#ff4d88;
+  color:white;
+  padding:12px 22px;
+  border-radius:25px;
+  opacity:0;
+  transition:.4s;
+}
+.fun-popup.show{opacity:1;}
+
+/* Shatter */
+.shard{
+  position:fixed;
+  width:10px;
+  height:10px;
+  background:#444;
+  animation:shatterAnim .8s forwards;
+}
+
+@keyframes shatterAnim{
+  to{
+    transform:translate(var(--dx),var(--dy)) rotate(720deg);
+    opacity:0;
+  }
+}
+
+/* Fireworks */
+#fireworks{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+}
+
+@media(max-width:700px){
+  .album{flex-direction:column;}
+  .thumbnail-page,.preview-page{width:100%;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="hero">
+<div class="poem">
+Roses are red,<br>
+pixels are small,<br>
+click this<br>
+<button class="love-btn" id="loveBtn">LOVE 💗</button>
+<br>button to make some hearts fall.
+<div id="surprise" class="surprise">
+And my heart always falls for you ❤️
+</div>
+<button class="memory-btn" id="memoryBtn">Our Memories 📸</button>
+</div>
+</div>
+
+<section class="collage-section" id="collageSection">
+<h2 class="collage-title">Our Favorite Memories ❤️</h2>
+
+<div class="album">
+<div class="thumbnail-page" id="thumbs"></div>
+
+<div class="preview-page">
+<div class="preview-frame">
+<img id="previewImage">
+</div>
+</div>
+</div>
+
+<div class="love-note">
+Your smile lights up my darkest days,<br>
+your touch makes time stand still.<br>
+I want every tomorrow with you by my side,<br>
+Will you be my forever valentine?
+</div>
+
+<div class="choice-buttons">
+<button class="yes-btn" id="yesBtn">Hell Yes ❤️🌻</button>
+<button class="no-btn" id="noBtn">Rejected 💔</button>
+</div>
+</section>
+
+<div class="letter-overlay" id="letterOverlay">
+<div class="letter">
+My Dearest love,<br><br>
+On this most affectionate occasion of Saint Valentine’s Day, my heart feels compelled to express what words so often fail to capture when I stand before you. Since you entered my life, even the simplest hours have taken on a rare brilliance. Your laughter lingers in my thoughts long after we part, and your kindness has become a comfort upon which my days now gently rest. In your company, worries soften, and time itself seems reluctant to move forward.<br><br>
+I remain in constant admiration of your grace, your warmth, and the light you bring wherever you go. To share both trivial moments and heartfelt conversations with you is a blessing I cherish beyond measure. Should life grant me a single enduring wish, it would be to remain the cause of your smiles, your solace in troubled hours, and your companion in every joy yet to unfold before us.
+<br><br>
+Accept, therefore, my sincerest gratitude for the happiness you bring into my world simply by being you. I remain, now and always,<br><br>
+Yours most devotedly❤️,<br><br>
+Shashwath<br><br>
+<button class="back-btn" onclick="closeLetter()">Album</button>
+</div>
+</div>
+
+<div class="fun-popup" id="funPopup">Nice try 😄</div>
+<canvas id="fireworks"></canvas>
+
+<script>
+/* ---------------- IMAGES ---------------- */
+const images=[
+"photos/20250216_110930.png",
+"photos/20251210_122322.jpg",
+"photos/20260126_121039.jpg",
+"photos/IMG_8169.JPG",
+"photos/IMG_8286.JPG",
+"photos/IMG_8464.JPG",
+"photos/IMG_8482.JPG",
+"photos/IMG_8645.JPG",
+"photos/IMG_8669.JPG",
+"photos/IMG_8674.JPG",
+"photos/IMG_8684.JPG",
+"photos/IMG_20240828_145118_561.jpg",
+"photos/IMG_20240828_145135_582.jpg",
+"photos/IMG_20240828_145143_390.jpg",
+"photos/IMG_20240828_145252_594.jpg",
+"photos/IMG_20240828_145259_663.jpg",
+"photos/IMG_20240828_145304_355.jpg",
+"photos/IMG_20250329_163430_048.jpg",
+"photos/IMG_20251105_234437_944.jpg",
+"photos/IMG_20251210_210120_024.jpg",
+"photos/IMG_20251212_160918_790.jpg",
+"photos/IMG_202408222_11111.jpg",
+"photos/Screenshot_20260204_212137_Gallery.jpg"
+];
+
+/* DOM references */
+const loveBtn = document.getElementById("loveBtn");
+const memoryBtn = document.getElementById("memoryBtn");
+const surprise = document.getElementById("surprise");
+const collageSection = document.getElementById("collageSection");
+
+const thumbs=document.getElementById("thumbs");
+const preview=document.getElementById("previewImage");
+const previewPage=document.querySelector(".preview-page");
+
+const yesBtn=document.getElementById("yesBtn");
+const noBtn=document.getElementById("noBtn");
+const letterOverlay=document.getElementById("letterOverlay");
+const funPopup=document.getElementById("funPopup");
+
+/* -------- Album Loading -------- */
+function loadAlbum(){
+  thumbs.innerHTML="";
+  images.forEach(src=>{
+    const img=document.createElement("img");
+    img.src=src;
+    thumbs.appendChild(img);
+
+    img.onmouseenter=()=>{
+      preview.src=src;
+      previewPage.classList.add("flip");
+      setTimeout(()=>previewPage.classList.remove("flip"),600);
+    };
+
+    img.onclick=()=>preview.src=src;
+  });
+}
+
+/* -------- Love Button -------- */
+loveBtn.onclick = () => {
+  surprise.style.display="block";
+  memoryBtn.style.display="inline-block";
+
+  for(let i=0;i<30;i++){
+    setTimeout(()=>{
+      const h=document.createElement("div");
+      h.className="heart";
+      h.innerHTML="❤️";
+      h.style.left=Math.random()*100+"vw";
+      h.style.animationDuration=(Math.random()*2+3)+"s";
+      h.style.fontSize=(Math.random()*20+20)+"px";
+      document.body.appendChild(h);
+      setTimeout(()=>h.remove(),5000);
+    },i*70);
+  }
+};
+
+/* -------- Memories Button -------- */
+memoryBtn.onclick = () => {
+  collageSection.style.display="block";
+  loadAlbum();
+  collageSection.scrollIntoView({behavior:"smooth"});
+};
+
+/* -------- Letter Popup -------- */
+yesBtn.onclick = () => {
+  letterOverlay.style.display="flex";
+
+  setTimeout(()=>{
+    letterOverlay.classList.add("show");
+  },10);
+
+  startFireworks();
+};
+
+function closeLetter(){
+  letterOverlay.classList.remove("show");
+
+  setTimeout(()=>{
+    letterOverlay.style.display="none";
+  },500);
+}
+
+/* -------- Rejected Button -------- */
+let dodgeEnd = Date.now()+5000;
+
+noBtn.onmouseenter = ()=>{
+  if(Date.now()>dodgeEnd) return;
+  noBtn.style.transform =
+    `translate(${Math.random()*300-150}px,
+               ${Math.random()*200-100}px)`;
+};
+
+noBtn.onclick = ()=>{
+  funPopup.classList.add("show");
+  setTimeout(()=>funPopup.classList.remove("show"),2000);
+
+  const rect=noBtn.getBoundingClientRect();
+
+  for(let i=0;i<25;i++){
+    const shard=document.createElement("div");
+    shard.className="shard";
+    shard.style.left=rect.left+"px";
+    shard.style.top=rect.top+"px";
+    shard.style.setProperty("--dx",(Math.random()*400-200)+"px");
+    shard.style.setProperty("--dy",(Math.random()*400-200)+"px");
+    document.body.appendChild(shard);
+    setTimeout(()=>shard.remove(),800);
+  }
+
+  noBtn.style.display="none";
+};
+
+/* -------- Fireworks -------- */
+const canvas=document.getElementById("fireworks");
+const ctx=canvas.getContext("2d");
+canvas.width=innerWidth;
+canvas.height=innerHeight;
+
+function startFireworks(){
+  const particles=[];
+  for(let i=0;i<100;i++){
+    particles.push({
+      x:canvas.width/2,
+      y:canvas.height/2,
+      dx:(Math.random()-0.5)*6,
+      dy:(Math.random()-0.5)*6,
+      life:100
+    });
+  }
+
+  function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    particles.forEach(p=>{
+      p.x+=p.dx;
+      p.y+=p.dy;
+      p.dy+=0.05;
+      p.life--;
+
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,3,0,Math.PI*2);
+      ctx.fillStyle=`hsl(${Math.random()*360},100%,60%)`;
+      ctx.fill();
+    });
+
+    if(particles.some(p=>p.life>0))
+      requestAnimationFrame(animate);
+  }
+
+  animate();
+}
+</script>
+
+
+</body>
+</html>
